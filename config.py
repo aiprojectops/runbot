@@ -96,6 +96,7 @@ RETRIEVAL_CONFIG = {
 # ==============================================
 CHATBOT_CONFIG = {
     "model": LLM_CONFIG["model"],
+    "llm_model": LLM_CONFIG["model"],  # ChatOpenAI uses 'model_name' parameter
     "temperature": LLM_CONFIG["temperature"],
     "max_tokens": LLM_CONFIG["max_tokens"],
     "search_results_count": RETRIEVAL_CONFIG["k"],
