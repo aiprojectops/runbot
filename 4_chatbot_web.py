@@ -301,8 +301,8 @@ def check_query_intent(query: str) -> Dict[str, Any]:
     # 이름 추출
     name = extract_person_name(query)
     
-    # 제품/상품 관련 질문 (우선순위 높음)
-    product_keywords = ['제품', '상품', '농산물', '판매', '가격', '얼마', '재고', '사고 싶', '구매', '주문']
+    # 제품/상품 관련 질문 (우선순위 높음, 패턴 확장)
+    product_keywords = ['제품', '상품', '농산물', '판매', '가격', '얼마', '재고', '사고 싶', '구매', '주문', '신제품', '새로운', '최신', '뭐야', '뭐', '무엇', '출하', '배송', '언제', '날짜']
     if any(keyword in query for keyword in product_keywords):
         # 제품명 추출 시도 (간단한 방법)
         for word in query.split():
@@ -314,7 +314,7 @@ def check_query_intent(query: str) -> Dict[str, Any]:
                 }
     
     # 제품명이 직접 언급된 경우 (고추, 딸기, 포도 등)
-    common_products = ['고추', '딸기', '포도', '사과', '바나나', '블루베리', '콩', '당근', '망골드']
+    common_products = ['고추', '딸기', '포도', '사과', '바나나', '블루베리', '콩', '당근', '망골드', '수박', '참외', '오이', '토마토', '감자']
     for product in common_products:
         if product in query:
             return {
@@ -323,8 +323,16 @@ def check_query_intent(query: str) -> Dict[str, Any]:
                 "params": {"name": product}
             }
     
-    # 특정 아이 정보 질문
-    if name and any(keyword in query for keyword in ['반', '어느', '어디', '누구', '언제', '몇']):
+    # 특정 아이 정보 질문 (패턴 확장)
+    if name and any(keyword in query for keyword in ['반', '어느', '어디', '누구', '언제', '몇', '알려', '대해', '정보', '소개']):
+        return {
+            "needs_db": True,
+            "intent": "child_info",
+            "params": {"name": name}
+        }
+    
+    # 이름만 있는 경우도 검색 (예: "박지훈?" 또는 "박지훈 뭐야?")
+    if name and len(query.strip().split()) <= 3:  # 짧은 질문
         return {
             "needs_db": True,
             "intent": "child_info",
@@ -342,6 +350,14 @@ def check_query_intent(query: str) -> Dict[str, Any]:
     
     # 전체 목록 질문
     if '명단' in query or '목록' in query or '전체' in query:
+        # 제품 목록 요청인지 확인
+        if any(keyword in query for keyword in ['제품', '상품', '농산물', '판매']):
+            return {
+                "needs_db": True,
+                "intent": "list_all_products",
+                "params": {}
+            }
+        # 아이 명단 요청
         return {
             "needs_db": True,
             "intent": "list_all",
@@ -410,6 +426,13 @@ def search_database(intent: str, params: Dict[str, Any]) -> str:
             result = f"[실시간 DB 검색 결과]\n전체 아이 목록 ({len(children)}명):\n\n"
             for child in children:
                 result += f"- {child.get('name', '알 수 없음')} ({child.get('class_name', '알 수 없음')})\n"
+            return result
+        
+        elif intent == "list_all_products":
+            products = db_helper.get_all_products()
+            result = f"[실시간 DB 검색 결과]\n전체 제품 목록 ({len(products)}개):\n\n"
+            for product in products:
+                result += f"- {product.get('name', '알 수 없음')} ({product.get('price', 'N/A')}원, 재고: {product.get('stock_quantity', 'N/A')}개)\n"
             return result
         
         return ""

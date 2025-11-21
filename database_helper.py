@@ -264,7 +264,8 @@ class MySQLDatabaseHelper(DatabaseHelper):
         """MySQL에서 직접 제품 검색"""
         try:
             with self.connection.cursor() as cursor:
-                query = "SELECT id, name, status, price, discount_price, stock_quantity, main_image, description FROM products WHERE 1=1"
+                # 모든 컬럼 조회 (출하 예정일 등 포함)
+                query = "SELECT * FROM products WHERE 1=1"
                 params = []
                 
                 if name:
@@ -285,6 +286,14 @@ class MySQLDatabaseHelper(DatabaseHelper):
             logger.error(f"[오류] MySQL 제품 검색 실패: {str(e)}")
             return []
     
+    def get_all_products(self, status: Optional[str] = "판매중") -> List[Dict[str, Any]]:
+        """모든 제품 목록 조회"""
+        return self.search_products(status=status)
+    
+    def get_all_children(self) -> List[Dict[str, Any]]:
+        """모든 아이 목록 조회"""
+        return self.search_children()
+    
     def format_product_info(self, product: Dict[str, Any]) -> str:
         """제품 정보를 보기 좋게 포맷팅"""
         info = f"🛒 제품명: {product.get('name', 'N/A')}\n"
@@ -295,6 +304,16 @@ class MySQLDatabaseHelper(DatabaseHelper):
         
         info += f"\n📦 재고: {product.get('stock_quantity', 'N/A')}개\n"
         info += f"📌 상태: {product.get('status', 'N/A')}"
+        
+        # 출하 예정일 추가 (여러 가능한 컬럼 이름 확인)
+        shipping_date = (product.get('shipping_date') or 
+                        product.get('delivery_date') or 
+                        product.get('expected_date') or
+                        product.get('출하예정일') or
+                        product.get('expected_shipping_date'))
+        
+        if shipping_date:
+            info += f"\n🚚 출하 예정일: {shipping_date}"
         
         # description이 있으면 앞부분만 추가
         if product.get('description'):
