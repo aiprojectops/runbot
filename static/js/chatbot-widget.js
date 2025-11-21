@@ -2,15 +2,20 @@
  * cafe24 MySQL RAG 챗봇 위젯
  * 
  * 사용법:
- * <script src="http://localhost:8080/static/js/chatbot-widget.js"></script>
+ * <script src="https://runbot-06mm.onrender.com/static/js/chatbot-widget.js"></script>
  */
 
 (function() {
     'use strict';
     
+    // 자동으로 현재 스크립트의 URL에서 서버 주소 감지
+    const currentScript = document.currentScript || document.querySelector('script[src*="chatbot-widget.js"]');
+    const scriptUrl = currentScript ? currentScript.src : '';
+    const baseUrl = scriptUrl ? new URL(scriptUrl).origin : 'http://localhost:8080';
+    
     // 설정
     const CONFIG = {
-        apiUrl: 'http://localhost:8080',
+        apiUrl: baseUrl,  // 자동 감지된 서버 주소 사용
         chatApiEndpoint: '/api/chat',
         cssPath: '/static/css/chatbot-widget.css'
     };
