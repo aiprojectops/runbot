@@ -23,8 +23,8 @@ wheels/
 .installed.cfg
 *.egg
 
-# 환경 설정 (민감 정보)
-config.py
+# 환경 변수만 제외 (config.py는 환경변수 기반이므로 포함)
+# config.py는 이제 GitHub에 포함됨 (실제 값 없음, 환경변수만 사용)
 
 # IDE
 .vscode/

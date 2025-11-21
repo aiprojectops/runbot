@@ -1,29 +1,30 @@
 # ==============================================
-# 📝 Config Template
+# 📝 Configuration (Environment Variables)
 # ==============================================
-# 이 파일을 참고하여 config.py를 생성하세요.
-# setup/setup.py를 실행하면 자동으로 생성됩니다.
+# This file reads configuration from environment variables.
+# For local development: use .env file
+# For production (Render): set environment variables in dashboard
 
 import os
 from dotenv import load_dotenv
 
-# 환경 변수 로드
+# Load environment variables from .env (only for local development)
 load_dotenv()
 
 def get_required_env(key: str) -> str:
-    """필수 환경 변수 가져오기 (없으면 에러)"""
+    """Get required environment variable"""
     value = os.getenv(key)
     if not value:
-        raise ValueError(f"환경 변수 '{key}'가 설정되지 않았습니다. .env 파일을 확인하세요.")
+        raise ValueError(f"환경 변수 '{key}'가 설정되지 않았습니다. Render 대시보드에서 환경변수를 확인하세요.")
     return value
 
 # ==============================================
-# 1. OpenAI 설정
+# 1. OpenAI Settings
 # ==============================================
 OPENAI_API_KEY = get_required_env("OPENAI_API_KEY")
 
 # ==============================================
-# 2. Supabase 설정
+# 2. Supabase Settings
 # ==============================================
 SUPABASE_URL = get_required_env("SUPABASE_URL")
 SUPABASE_SERVICE_ROLE_KEY = get_required_env("SUPABASE_SERVICE_ROLE_KEY")
@@ -31,7 +32,7 @@ SUPABASE_TABLE_NAME = "mysql_data_embeddings"
 SUPABASE_QUERY_NAME = "match_mysql_embeddings"
 
 # ==============================================
-# 3. cafe24 MySQL 데이터베이스 설정
+# 3. Cafe24 MySQL Database Settings
 # ==============================================
 CAFE24_DB_CONFIG = {
     "host": os.getenv("CAFE24_DB_HOST"),
@@ -42,13 +43,12 @@ CAFE24_DB_CONFIG = {
     "charset": os.getenv("CAFE24_DB_CHARSET", "utf8mb4")
 }
 
-# MySQL 직접 연결 사용 여부
+# MySQL connection toggle
 USE_MYSQL_CONNECTION = os.getenv("USE_MYSQL_CONNECTION", "True").lower() == "true"
 
 # ==============================================
-# 4. 데이터 추출 설정 (JSON 파일용)
+# 4. Data Extraction Config (JSON files)
 # ==============================================
-# setup/file_processor_v2.py를 실행하면 data/processed_data.json이 생성됩니다.
 DATA_EXTRACTION_CONFIG = {
     "processed_data": {
         "json_file": "data/processed_data.json",
@@ -60,7 +60,7 @@ DATA_EXTRACTION_CONFIG = {
 }
 
 # ==============================================
-# 5. 임베딩 설정
+# 5. Embedding Config
 # ==============================================
 EMBEDDING_CONFIG = {
     "model": "text-embedding-3-small",
@@ -69,7 +69,7 @@ EMBEDDING_CONFIG = {
 }
 
 # ==============================================
-# 6. LLM 설정
+# 6. LLM Config
 # ==============================================
 LLM_CONFIG = {
     "model": "gpt-4o-mini",
@@ -78,10 +78,9 @@ LLM_CONFIG = {
 }
 
 # ==============================================
-# 7. 검색 설정
+# 7. Retrieval Config
 # ==============================================
 RETRIEVAL_CONFIG = {
-    "k": 5,  # 검색할 문서 개수
-    "hybrid_weight": 0.7  # 벡터 검색 가중치 (0~1)
+    "k": 5,
+    "hybrid_weight": 0.7
 }
-
