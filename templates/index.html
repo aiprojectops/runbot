@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cafe24 MySQL RAG 챗봇</title>
+    <link rel="stylesheet" href="/static/css/chatbot.css">
+</head>
+<body>
+    <!-- 테스트 페이지 콘텐츠 -->
+    <div class="test-page">
+        <header>
+            <h1>cafe24 MySQL RAG 챗봇 테스트 페이지</h1>
+            <p>오른쪽 하단의 버튼을 클릭해서 챗봇과 대화해보세요!</p>
+        </header>
+        
+        <main>
+            <div class="content-section">
+                <h2>챗봇 소개</h2>
+                <p>이 챗봇은 cafe24 MySQL 데이터베이스의 정보를 기반으로 답변을 제공합니다.</p>
+                <ul>
+                    <li><strong>RAG 기반</strong>: 벡터 검색 + BM25 키워드 검색</li>
+                    <li><strong>OpenAI GPT</strong>: gpt-4o-mini 모델 사용</li>
+                    <li><strong>Supabase</strong>: 벡터 데이터베이스</li>
+                </ul>
+            </div>
+            
+            <div class="content-section">
+                <h2>예시 질문</h2>
+                <div class="example-questions">
+                    <button class="example-btn" onclick="askQuestion('김민수는 어느 반인가?')">김민수는 어느 반인가?</button>
+                    <button class="example-btn" onclick="askQuestion('최예은은 누구인가?')">최예은은 누구인가?</button>
+                    <button class="example-btn" onclick="askQuestion('가장 최근 활동 사진은?')">가장 최근 활동 사진은?</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- 챗봇 버튼 (오른쪽 하단) -->
+    <button id="chatbot-toggle-btn" class="chatbot-toggle" aria-label="채팅 시작">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+    
+    <!-- 사이드 톡 패널 -->
+    <div id="chatbot-panel" class="chatbot-panel">
+        <!-- 헤더 -->
+        <div class="chatbot-header">
+            <div class="chatbot-header-content">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <h3>cafe24 MySQL RAG 챗봇</h3>
+            </div>
+            <button id="chatbot-close-btn" class="chatbot-close" aria-label="닫기">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- 메시지 영역 -->
+        <div id="chatbot-messages" class="chatbot-messages">
+            <div class="message bot-message">
+                <div class="message-avatar">AI</div>
+                <div class="message-content">
+                    <p>안녕하세요! cafe24 데이터베이스 기반 AI 어시스턴트입니다.</p>
+                    <p>궁금하신 점을 자유롭게 질문해주세요. 😊</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 로딩 표시 -->
+        <div id="chatbot-loading" class="chatbot-loading" style="display: none;">
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- 입력 영역 -->
+        <div class="chatbot-input-area">
+            <textarea 
+                id="chatbot-input" 
+                class="chatbot-input" 
+                placeholder="메시지를 입력해주세요..."
+                rows="1"
+            ></textarea>
+            <button id="chatbot-send-btn" class="chatbot-send-btn" aria-label="전송">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <script src="/static/js/chatbot.js"></script>
+</body>
+</html>
+

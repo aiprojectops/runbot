@@ -1,0 +1,34 @@
+# 의존성 자동 해결 (버전 고정 제거)
+
+# 핵심 패키지
+openai
+streamlit
+tqdm
+flask
+flask-cors
+python-dotenv
+
+# LangChain
+langchain-core
+langchain-openai  
+langchain-community
+langchain-text-splitters
+
+# Supabase (의존성 자동 해결)
+supabase
+
+# 텍스트 검색
+rank-bm25
+
+# MySQL 연결 (선택사항 - 실제 DB 연결 시 필요)
+pymysql
+cryptography
+
+# 파일 처리 (선택사항 - setup/file_processor.py 사용 시)
+PyPDF2           # PDF 파일 처리
+Pillow           # 이미지 처리
+pytesseract      # OCR (Tesseract 별도 설치 필요)
+python-docx      # Word 문서 처리
+openpyxl         # Excel 파일 처리
+pandas           # Excel 데이터 처리
+

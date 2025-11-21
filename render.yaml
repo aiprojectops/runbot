@@ -1,0 +1,24 @@
+# Render 자동 배포 설정
+# https://render.com/docs/yaml-spec
+
+services:
+  - type: web
+    name: chatbot-web
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python 4_chatbot_web.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.0
+      - key: PORT
+        value: 8080
+    # 환경변수는 Render 대시보드에서 직접 추가하세요:
+    # - OPENAI_API_KEY
+    # - SUPABASE_URL
+    # - SUPABASE_SERVICE_ROLE_KEY
+    # - USE_MYSQL_CONNECTION
+    # - CAFE24_DB_HOST (MySQL 사용 시)
+    # - CAFE24_DB_USER (MySQL 사용 시)
+    # - CAFE24_DB_PASSWORD (MySQL 사용 시)
+    # - CAFE24_DB_DATABASE (MySQL 사용 시)
+
