@@ -97,7 +97,8 @@ RETRIEVAL_CONFIG = {
 CHATBOT_CONFIG = {
     "model": LLM_CONFIG["model"],
     "temperature": LLM_CONFIG["temperature"],
-    "max_tokens": LLM_CONFIG["max_tokens"]
+    "max_tokens": LLM_CONFIG["max_tokens"],
+    "search_results_count": RETRIEVAL_CONFIG["k"]
 }
 
 # ==============================================
