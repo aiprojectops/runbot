@@ -98,7 +98,9 @@ CHATBOT_CONFIG = {
     "model": LLM_CONFIG["model"],
     "temperature": LLM_CONFIG["temperature"],
     "max_tokens": LLM_CONFIG["max_tokens"],
-    "search_results_count": RETRIEVAL_CONFIG["k"]
+    "search_results_count": RETRIEVAL_CONFIG["k"],
+    "vector_weight": RETRIEVAL_CONFIG["hybrid_weight"],
+    "bm25_weight": 1 - RETRIEVAL_CONFIG["hybrid_weight"]
 }
 
 # ==============================================
