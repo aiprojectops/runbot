@@ -31,6 +31,12 @@ SUPABASE_SERVICE_ROLE_KEY = get_required_env("SUPABASE_SERVICE_ROLE_KEY")
 SUPABASE_TABLE_NAME = "mysql_data_embeddings"
 SUPABASE_QUERY_NAME = "match_mysql_embeddings"
 
+# Supabase tables config (for compatibility)
+SUPABASE_TABLES = {
+    "embeddings": SUPABASE_TABLE_NAME,
+    "match_function": SUPABASE_QUERY_NAME
+}
+
 # ==============================================
 # 3. Cafe24 MySQL Database Settings
 # ==============================================
@@ -83,4 +89,21 @@ LLM_CONFIG = {
 RETRIEVAL_CONFIG = {
     "k": 5,
     "hybrid_weight": 0.7
+}
+
+# ==============================================
+# 8. Chatbot Config (for web interface)
+# ==============================================
+CHATBOT_CONFIG = {
+    "model": LLM_CONFIG["model"],
+    "temperature": LLM_CONFIG["temperature"],
+    "max_tokens": LLM_CONFIG["max_tokens"]
+}
+
+# ==============================================
+# 9. Logging Config
+# ==============================================
+LOGGING_CONFIG = {
+    "level": "INFO",
+    "format": "%(asctime)s - %(levelname)s - %(message)s"
 }
